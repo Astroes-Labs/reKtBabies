@@ -13,25 +13,48 @@ class RektController extends Controller
         return view('details');
     }
 
-    public function register(Request $request)
-    {
-        $request->validate([
+public function register(Request $request)
+{
+    try {
+
+        $validated = $request->validate([
             'x_username' => ['required', 'regex:/^@[A-Za-z0-9_]+$/'],
-            'wallet' => ['required', 'regex:/^0x[a-fA-F0-9]{40}$/']
+            'wallet' => ['required', 'regex:/^0x[a-fA-F0-9]{40}$/'],
+            'referrer' => ['nullable', 'regex:/^@[A-Za-z0-9_]+$/'],
+            'retweet_proof' => ['required', 'regex:/^https:\/\/(www\.)?x\.com\/.+$/'],
+            'comment_proof' => ['required', 'regex:/^https:\/\/(www\.)?x\.com\/.+$/'],
         ]);
 
-        if (RektUser::where('wallet', $request->wallet)->exists()) {
-            return response()->json([
-                'error' => 'Wallet already registered'
-            ], 422);
+        // Username uniqueness
+        if (RektUser::where('x_username', $validated['x_username'])->exists()) {
+            return response()->json(['error' => 'Username already registered'], 422);
         }
 
-        $referralCode = Str::lower(Str::random(8));
+        // Self referral protection
+        // if (!empty($validated['referrer'])) {
+        //     $refExists = RektUser::where('x_username', $validated['referrer'])->exists();
 
-        $user = RektUser::create([
-            'x_username' => $request->x_username,
-            'referrer' => $request->referrer,
-            'wallet' => $request->wallet,
+        //     if (!$refExists) {
+        //         return response()->json(['error' => 'Invalid referrer'], 422);
+        //     }
+        // }
+
+        // Wallet uniqueness
+        if (RektUser::where('wallet', strtolower($validated['wallet']))->exists()) {
+            return response()->json(['error' => 'Wallet already registered'], 422);
+        }
+
+        $cleanUsername = strtolower(str_replace('@', '', $validated['x_username']));
+        $referralCode = $cleanUsername;
+
+        if (RektUser::where('referral_code', $referralCode)->exists()) {
+            $referralCode = $cleanUsername . Str::random(4);
+        }
+
+        RektUser::create([
+            'x_username' => $validated['x_username'],
+            'referrer' => $validated['referrer'] ?? null,
+            'wallet' => strtolower($validated['wallet']),
             'referral_code' => $referralCode
         ]);
 
@@ -39,5 +62,13 @@ class RektController extends Controller
             'success' => true,
             'referral_link' => url('/details?ref=' . $referralCode)
         ]);
+
+    } catch (\Illuminate\Validation\ValidationException $e) {
+
+        return response()->json([
+            'error' => $e->errors()
+        ], 422);
     }
+}
+
 }

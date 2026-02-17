@@ -74,6 +74,13 @@
                     PROCEED
                 </button>
 
+                <button type="button" id="backToStep1" class="mt-3">
+                    ← BACK
+                </button>
+
+
+
+
             </div>
         </div>
 
@@ -94,6 +101,11 @@
                 <button type="submit" class="btn-glitch w-full">
                     FINALIZE REKT
                 </button>
+                <button type="button" id="backToStep2" class="mt-3">
+                    ← BACK
+                </button>
+
+
             </form>
 
 
@@ -206,10 +218,14 @@
             const proof1 = document.getElementById('retweetProof').value.trim();
             const proof2 = document.getElementById('commentProof').value.trim();
 
-            if (proof1 === '' || proof2 === '') {
-                alert('Complete all tasks');
+            if (
+                proof1 === '' ||
+                proof2 === ''
+            ) {
+                alert('Links must be valid x.com URLs');
                 return;
             }
+
 
             showLoader(() => {
                 document.getElementById('step2').classList.add('hidden');
@@ -218,57 +234,74 @@
         });
 
         /* STEP 3 FINAL SUBMIT */
-        document.getElementById('walletForm').addEventListener('submit', function (e) {
+        document.getElementById('walletForm').addEventListener('submit', async function (e) {
             e.preventDefault();
 
             const wallet = document.getElementById('walletInput').value.trim();
+            const proof1 = document.getElementById('retweetProof').value.trim();
+            const proof2 = document.getElementById('commentProof').value.trim();
 
-            fetch('/ajax/register', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                },
-                body: JSON.stringify({
-                    x_username: storedUsername,
-                    referrer: storedReferrer,
-                    wallet: wallet
-                })
-            })
-                .then(res => res.json())
-                .then(data => {
+            try {
 
-                    if (data.error) {
+                const response = await fetch('/ajax/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: JSON.stringify({
+                        x_username: storedUsername,
+                        referrer: storedReferrer,
+                        wallet: wallet,
+                        retweet_proof: proof1,
+                        comment_proof: proof2
+                    })
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+
+                    if (typeof data.error === 'object') {
+                        const firstError = Object.values(data.error)[0][0];
+                        document.getElementById('walletError').innerText = firstError;
+                    } else {
                         document.getElementById('walletError').innerText = data.error;
-                        return;
                     }
 
-                    showLoader(() => {
+                    return;
+                }
 
-                        document.getElementById('step3').innerHTML = `
-                    <div class="text-center">
-                        <h3 class="text-xl mb-4">YOUR REFERRAL LINK</h3>
+                showLoader(() => {
 
-                        <div id="refLink" class="mb-4">${data.referral_link}</div>
+                    document.getElementById('step3').innerHTML = `
+                                    <div class="text-center">
+                                        <h3 class="text-xl mb-4">YOUR REFERRAL LINK</h3>
 
-                        <button onclick="copyLink()" class="btn-glitch">
-                            COPY LINK
-                        </button>
+                                        <div id="refLink" class="mb-4">${data.referral_link}</div>
 
-                        <p class="mt-4 text-green-300">
-                            SHARE LINK FOR HIGHER REVIEW CHANCE<br>
-                            STAY TUNED FOR UPDATES
-                        </p>
+                                        <button onclick="copyLink()" class="btn-glitch">
+                                            COPY LINK
+                                        </button>
 
-                        <div class="mt-6">
-                            <a href="/" class="btn-glitch">HOME</a>
-                        </div>
-                    </div>
-                `;
-                    });
+                                        <p class="mt-4 text-green-300">
+                                            SHARE LINK FOR HIGHER REVIEW CHANCE<br>
+                                            STAY TUNED FOR UPDATES
+                                        </p>
 
+                                        <div class="mt-6">
+                                            <a href="/" class="btn-glitch">HOME</a>
+                                        </div>
+                                    </div>
+                                `;
                 });
+
+            } catch (error) {
+                document.getElementById('walletError').innerText = 'Server error. Try again.';
+            }
         });
+
 
         /* COPY */
         function copyLink() {
@@ -286,6 +319,29 @@
 
             setTimeout(() => toast.remove(), 2000);
         }
+
+        const step1 = document.getElementById('step1');
+        const step2 = document.getElementById('step2');
+        const step3 = document.getElementById('step3');
+
+        function goToStep(step) {
+            step1.classList.add('hidden');
+            step2.classList.add('hidden');
+            step3.classList.add('hidden');
+
+            document.getElementById('step' + step).classList.remove('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+
+        }
+
+        document.getElementById('backToStep1').addEventListener('click', function () {
+            goToStep(1);
+        });
+
+        document.getElementById('backToStep2').addEventListener('click', function () {
+            goToStep(2);
+        });
+
     </script>
 
 

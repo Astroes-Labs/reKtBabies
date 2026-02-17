@@ -276,25 +276,25 @@
                 showLoader(() => {
 
                     document.getElementById('step3').innerHTML = `
-                                    <div class="text-center">
-                                        <h3 class="text-xl mb-4">YOUR REFERRAL LINK</h3>
+                                        <div class="text-center">
+                                            <h3 class="text-xl mb-4">YOUR REFERRAL LINK</h3>
 
-                                        <div id="refLink" class="mb-4">${data.referral_link}</div>
+                                            <div id="refLink" class="mb-4">${data.referral_link}</div>
 
-                                        <button onclick="copyLink()" class="btn-glitch">
-                                            COPY LINK
-                                        </button>
+                                            <button onclick="copyLink()" class="btn-glitch">
+                                                COPY LINK
+                                            </button>
 
-                                        <p class="mt-4 text-green-300">
-                                            SHARE LINK FOR HIGHER REVIEW CHANCE<br>
-                                            STAY TUNED FOR UPDATES
-                                        </p>
+                                            <p class="mt-4 text-green-300">
+                                                SHARE LINK FOR HIGHER REVIEW CHANCE<br>
+                                                STAY TUNED FOR UPDATES
+                                            </p>
 
-                                        <div class="mt-6">
-                                            <a href="/" class="btn-glitch">HOME</a>
+                                            <div class="mt-6">
+                                                <a href="/" class="btn-glitch">HOME</a>
+                                            </div>
                                         </div>
-                                    </div>
-                                `;
+                                    `;
                 });
 
             } catch (error) {
@@ -341,6 +341,19 @@
         document.getElementById('backToStep2').addEventListener('click', function () {
             goToStep(2);
         });
+
+        // Autofill referrer from URL
+        window.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const ref = urlParams.get('ref'); // grabs ?ref=...
+            if (ref) {
+                const referrerInput = document.getElementById('referrer');
+                if (referrerInput) {
+                    referrerInput.value = '@' + ref; // add @ to match X username format
+                }
+            }
+        });
+
 
     </script>
 

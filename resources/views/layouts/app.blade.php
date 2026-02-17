@@ -14,8 +14,15 @@
         }
 
         @keyframes pulse {
-            0%, 100% { filter: drop-shadow(0 0 10px #00ff80); }
-            50% { filter: drop-shadow(0 0 20px #00ff80); }
+
+            0%,
+            100% {
+                filter: drop-shadow(0 0 10px #00ff80);
+            }
+
+            50% {
+                filter: drop-shadow(0 0 20px #00ff80);
+            }
         }
 
         .glitch:hover {
@@ -23,12 +30,29 @@
         }
 
         @keyframes glitch {
-            0% { transform: translate(0px, 0px) skew(0deg); }
-            20% { transform: translate(-2px, 2px) skew(-2deg); }
-            40% { transform: translate(2px, -2px) skew(2deg); }
-            60% { transform: translate(-1px, 1px) skew(-1deg); }
-            80% { transform: translate(1px, -1px) skew(1deg); }
-            100% { transform: translate(0px, 0px) skew(0deg); }
+            0% {
+                transform: translate(0px, 0px) skew(0deg);
+            }
+
+            20% {
+                transform: translate(-2px, 2px) skew(-2deg);
+            }
+
+            40% {
+                transform: translate(2px, -2px) skew(2deg);
+            }
+
+            60% {
+                transform: translate(-1px, 1px) skew(-1deg);
+            }
+
+            80% {
+                transform: translate(1px, -1px) skew(1deg);
+            }
+
+            100% {
+                transform: translate(0px, 0px) skew(0deg);
+            }
         }
 
         .footer-icon {
@@ -70,11 +94,36 @@
 
         .neon-about:hover {
             transform: scale(1.05);
-            background: rgba(0,255,128,0.1);
+            background: rgba(0, 255, 128, 0.1);
         }
 
         .neon-about:hover::before {
             opacity: 0.5;
+        }
+
+        .mirror-k {
+            display: inline-block;
+            /* required for transform to work properly */
+            transform: scaleX(-1);
+            /* horizontal mirror/flip */
+            transform-origin: center;
+            /* flip around the center of the letter */
+        }
+
+        /* Optional: make it feel more "REKT"/neon */
+        .mirror-k {
+            display: inline-block;
+            transform: scaleX(-1);
+            color: #ff0000;
+            /* or any accent color like red/purple for contrast */
+            text-shadow: 0 0 10px #ff0000;
+            /* glow if you want */
+        }
+
+        /* If you want hover interaction too */
+        a:hover .mirror-k {
+            transform: scaleX(-1) scale(1.1);
+            /* slight grow on hover */
         }
     </style>
 </head>
@@ -83,20 +132,23 @@
 
     <!-- Shared Background -->
     <div class="fixed inset-0 -z-10">
-        <img src="{{ asset('images/cyberpunk-bg.png') }}" alt="Background" class="w-full h-full object-cover opacity-60">
-        <div class="absolute inset-0 bg-[radial-gradient(circle,_rgba(0,255,128,0.2),transparent_70%)] mix-blend-overlay pointer-events-none"></div>
+        <img src="{{ asset('images/cyberpunk-bg.png') }}" alt="Background"
+            class="w-full h-full object-cover opacity-60">
+        <div
+            class="absolute inset-0 bg-[radial-gradient(circle,_rgba(0,255,128,0.2),transparent_70%)] mix-blend-overlay pointer-events-none">
+        </div>
 
         <div class="absolute inset-0 pointer-events-none">
             <svg class="w-full h-full">
                 <defs>
                     <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
-                        <line x1="0" y1="0" x2="0" y2="20" stroke="rgba(0,255,128,0.1)" stroke-width="1"/>
-                        <line x1="0" y1="20" x2="20" y2="20" stroke="rgba(0,255,128,0.1)" stroke-width="1"/>
+                        <line x1="0" y1="0" x2="0" y2="20" stroke="rgba(0,255,128,0.1)" stroke-width="1" />
+                        <line x1="0" y1="20" x2="20" y2="20" stroke="rgba(0,255,128,0.1)" stroke-width="1" />
                     </pattern>
                 </defs>
                 <rect width="100%" height="100%" fill="url(#grid)">
-                    <animate attributeName="x" from="0" to="20" dur="10s" repeatCount="indefinite"/>
-                    <animate attributeName="y" from="0" to="20" dur="10s" repeatCount="indefinite"/>
+                    <animate attributeName="x" from="0" to="20" dur="10s" repeatCount="indefinite" />
+                    <animate attributeName="y" from="0" to="20" dur="10s" repeatCount="indefinite" />
                 </rect>
             </svg>
         </div>
@@ -105,18 +157,22 @@
     <!-- Header -->
     <header class="flex items-center justify-between px-8 py-6 relative z-20">
         <div class="text-3xl font-black tracking-wide uppercase drop-shadow-lg">
-            {{ config('app.name', 'REKT Babies') }}
+            <a href="{{ route('home') }}"
+                class="text-green-400 hover:text-green-300 transition-colors duration-300 font-bold">
+                RE<span class="mirror-k">K</span>TBabies
+            </a>
         </div>
 
         <div class="flex items-center gap-4">
             <div class="w-12 h-12 flex items-center justify-center profile-pulse">
                 <svg width="48" height="48" viewBox="0 0 600 600" fill="#00FF80">
-                    <circle cx="300" cy="230" r="115"/>
-                    <circle cx="300" cy="550" r="205"/>
+                    <circle cx="300" cy="230" r="115" />
+                    <circle cx="300" cy="550" r="205" />
                 </svg>
             </div>
 
-            <button class="px-5 py-2 bg-green-600 hover:bg-green-700 text-black rounded-lg font-bold shadow-lg hover:scale-105 transition-transform duration-300 glitch">
+            <button
+                class="px-5 py-2 bg-green-600 hover:bg-green-700 text-black rounded-lg font-bold shadow-lg hover:scale-105 transition-transform duration-300 glitch">
                 Connect
             </button>
         </div>
@@ -129,9 +185,9 @@
 
     <!-- Footer -->
     <footer class="w-full py-8 relative z-10 flex flex-col items-center gap-6 text-center">
-        <a href="{{ route('about') }}" class="neon-about">
-            About
-        </a>
+        @if (!request()->routeIs('about'))
+            <a href="{{ route('about') }}" class="neon-about">About</a>
+        @endif
 
         <div class="flex items-center gap-12 mt-4">
             @include('partials.social-icons')
@@ -139,4 +195,5 @@
     </footer>
 
 </body>
+
 </html>

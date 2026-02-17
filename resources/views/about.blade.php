@@ -12,31 +12,31 @@
 
                 <!-- Card 1 -->
                 <div class="min-w-[300px] h-[400px] bg-black/60 border border-green-500 rounded-xl overflow-hidden shadow-lg">
-                    <img src="{{ asset('images/card1.jpg') }}" class="w-full h-full object-cover">
+                    <img src="{{ asset('images/card1.png') }}" class="w-full h-full object-cover">
                 </div>
 
                 <!-- Card 2 -->
                 <div class="min-w-[300px] h-[400px] bg-black/60 border border-green-500 rounded-xl overflow-hidden shadow-lg">
-                    <img src="{{ asset('images/card2.jpg') }}" class="w-full h-full object-cover">
+                    <img src="{{ asset('images/card2.png') }}" class="w-full h-full object-cover">
                 </div>
 
                 <!-- Card 3 -->
                 <div class="min-w-[300px] h-[400px] bg-black/60 border border-green-500 rounded-xl overflow-hidden shadow-lg">
-                    <img src="{{ asset('images/card3.jpg') }}" class="w-full h-full object-cover">
+                    <img src="{{ asset('images/card3.png') }}" class="w-full h-full object-cover">
                 </div>
 
                 <!-- Card 4 -->
                 <div class="min-w-[300px] h-[400px] bg-black/60 border border-green-500 rounded-xl overflow-hidden shadow-lg">
-                    <img src="{{ asset('images/card4.jpg') }}" class="w-full h-full object-cover">
+                    <img src="{{ asset('images/card4.png') }}" class="w-full h-full object-cover">
                 </div>
 
                 <!-- Duplicate for infinite illusion -->
                 <div class="min-w-[300px] h-[400px] bg-black/60 border border-green-500 rounded-xl overflow-hidden shadow-lg">
-                    <img src="{{ asset('images/card1.jpg') }}" class="w-full h-full object-cover">
+                    <img src="{{ asset('images/card1.png') }}" class="w-full h-full object-cover">
                 </div>
 
                 <div class="min-w-[300px] h-[400px] bg-black/60 border border-green-500 rounded-xl overflow-hidden shadow-lg">
-                    <img src="{{ asset('images/card2.jpg') }}" class="w-full h-full object-cover">
+                    <img src="{{ asset('images/card2.png') }}" class="w-full h-full object-cover">
                 </div>
 
             </div>

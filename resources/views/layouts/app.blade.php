@@ -129,7 +129,7 @@
 
     <!-- Footer -->
     <footer class="w-full py-8 relative z-10 flex flex-col items-center gap-6 text-center">
-        <a href="#about" class="neon-about">
+        <a href="{{ route('about') }}" class="neon-about">
             About
         </a>
 

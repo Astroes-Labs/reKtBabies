@@ -83,6 +83,7 @@
 
     <!-- Shared Background -->
     <div class="fixed inset-0 -z-10">
+        <img src="{{ asset('images/cyberpunk-bg.png') }}" alt="Background" class="w-full h-full object-cover opacity-60">
         <div class="absolute inset-0 bg-[radial-gradient(circle,_rgba(0,255,128,0.2),transparent_70%)] mix-blend-overlay pointer-events-none"></div>
 
         <div class="absolute inset-0 pointer-events-none">
